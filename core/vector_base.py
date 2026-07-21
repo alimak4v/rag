@@ -7,7 +7,7 @@ from qdrant_client.models import (
 from core.embedder import get_embedding
 
 
-client = QdrantClient(path="../knowledge")
+client = QdrantClient(path="./knowledge")
 
 if not client.collection_exists("rag_facts"):    
     client.create_collection(
@@ -15,7 +15,7 @@ if not client.collection_exists("rag_facts"):
         vectors_config=VectorParams(
             size=384,
             distance=Distance.COSINE,
-        ),
+        )
     )
 
 def add(line):
@@ -24,12 +24,12 @@ def add(line):
         vector=get_embedding(line).tolist(),
         payload={
             "text": line
-        },
+        }
     )
 
     client.upsert(
         collection_name="rag_facts",
-        points=[point],
+        points=[point]
     )
 
 def find(line, how_many=1):
@@ -37,7 +37,7 @@ def find(line, how_many=1):
         collection_name="rag_facts",
         query=get_embedding(line).tolist(),
         limit=how_many,
-        with_payload=True,
+        with_payload=True
     )
     return response.points
 
@@ -46,6 +46,6 @@ def all(how_many=100):
         collection_name="rag_facts",
         with_payload=True,
         limit=how_many,
-        with_vectors=False,
+        with_vectors=False
     )
     return points
