@@ -1,0 +1,10 @@
+[project]
+name = "rag"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=2.48.0",
+    "python-dotenv>=1.2.2",
+    "qdrant-client>=1.18.0",
+    "sentence-transformers>=5.6.1",
+]

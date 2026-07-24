@@ -31,14 +31,20 @@ def add(line):
         points=[point]
     )
 
-def find(line, how_many=1):
+def find(line, how_many=1, min_score=0.75, debug=False):
     response = client.query_points(
         collection_name="rag_facts",
         query=get_embedding(line).tolist(),
         limit=how_many,
         with_payload=True
     )
-    return response.points
+    if debug == True:
+        print(response.points)
+    result = []
+    for point in response.points:
+        if point.score > min_score:
+            result.append(point)
+    return result
 
 def all(how_many=100):
     points, next_offset = client.scroll(
