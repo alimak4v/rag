@@ -2,7 +2,8 @@ from openai import OpenAI
 from beauty_code import rainbow
 import os
 from dotenv import load_dotenv
-
+from core.embedder import get_embedding
+from core.vector_base import *
 
 load_dotenv()
 
@@ -31,9 +32,13 @@ hi = r"""
 
 print(rainbow(hi))
 
+print(all())
+
 while True:
     question = input(">>> ")
     conversation_history.append({"role": "user", "content": question})
+    nearest = str(find(question))
+    conversation_history.append({"role": "tool", "content": nearest})
     response = client.chat.completions.create(
         model=os.getenv("OPENAI_MODEL"),
         messages=conversation_history,

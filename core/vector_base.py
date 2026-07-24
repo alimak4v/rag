@@ -5,7 +5,7 @@ from qdrant_client.models import (
     VectorParams,
 )
 from core.embedder import get_embedding
-
+from uuid import uuid4
 
 client = QdrantClient(path="./knowledge")
 
@@ -20,13 +20,12 @@ if not client.collection_exists("rag_facts"):
 
 def add(line):
     point = PointStruct(
-        id=1,
+        id=str(uuid4()),
         vector=get_embedding(line).tolist(),
         payload={
             "text": line
         }
     )
-
     client.upsert(
         collection_name="rag_facts",
         points=[point]
